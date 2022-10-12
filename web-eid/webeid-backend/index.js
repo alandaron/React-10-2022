@@ -55,9 +55,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.get("/auth/challenge", (req, res) => {
-	if (req.socket.authorized) {
-		console.log("authenticated");
-	}
 	const nonceLength = req.header("X-Nonce-Length")
 		? parseInt(req.header("X-Nonce-Length"), 10)
 		: 32;
@@ -84,7 +81,7 @@ app.post("/auth/token", (req, res) => {
 
 	if (required.every((key) => !!req.body[key])) {
 		// Võtame sertifikaadi seest välja isiku andmed.
-		// [TODO]: Tuleks kindlasti sertifikaati kontrollida!
+		// [TODO]: Tuleks kindlasti sertifikaadi autentsust kontrollida!
 
 		let secureContext = tls.createSecureContext({
 			cert: `-----BEGIN CERTIFICATE-----\n${req.body["unverifiedCertificate"]}\n-----END CERTIFICATE-----`,
