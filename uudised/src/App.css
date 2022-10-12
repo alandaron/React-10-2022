@@ -1,0 +1,28 @@
+.app {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.lingid {
+  text-align: center;
+}
+
+.lingid button {
+  margin: 5px 5px 0 5px;
+  width: 150px;
+  padding: 10px;
+  background-color: rgb(83, 83, 235);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 10px;
+}
+
+.lingid button:hover {
+  cursor: pointer;
+  background-color: rgb(130, 130, 236);
+  color: rgb(0, 0, 0);
+}
+
+.logo {
+  width: 200px;
+}
