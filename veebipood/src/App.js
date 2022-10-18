@@ -30,6 +30,12 @@ function App() {
 			<Link to="/ostukorv">
 				<button className="nupp">Ostukorv</button>
 			</Link>
+			<Link to="/meist">
+				<button className="nupp">Meist</button>
+			</Link>
+			<Link to="/seaded">
+				<button className="nupp">Seaded</button>
+			</Link>
 
 			<Routes>
 				<Route path="" element={<Avaleht />} />
