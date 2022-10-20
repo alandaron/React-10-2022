@@ -13,13 +13,7 @@ import YksikToode from "./pages/YksikToode";
 function App() {
 	return (
 		<div className="App">
-			<div className="header">
-				<img
-					className="pilt"
-					src="https://imagizer.imageshack.com/v2/942x1257q90/r/924/Slpsqh.png"
-					alt="Audi RS6 C7 Carbon Kit"
-				/>
-			</div>
+			<div className="header"></div>
 			<hr />
 			<Link to="/">
 				<button className="nupp">Avaleht</button>
@@ -35,6 +29,9 @@ function App() {
 			</Link>
 			<Link to="/seaded">
 				<button className="nupp">Seaded</button>
+			</Link>
+			<Link to="/poed">
+				<button className="nupp">Poed</button>
 			</Link>
 
 			<Routes>

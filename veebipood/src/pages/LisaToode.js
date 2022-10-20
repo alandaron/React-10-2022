@@ -10,6 +10,11 @@ function LisaToode() {
 			nimiRef.current.value = "";
 		} else {
 			uuendaSonum("Uus toode lisatud: " + nimiRef.current.value);
+			let tootedLS = localStorage.getItem("tooted");
+			tootedLS = JSON.parse(tootedLS) || [];
+			tootedLS.push(nimiRef.current.value);
+			tootedLS = JSON.stringify(tootedLS);
+			localStorage.setItem("tooted", tootedLS);
 			nimiRef.current.value = "";
 		}
 	};

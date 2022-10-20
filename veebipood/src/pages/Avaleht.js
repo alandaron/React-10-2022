@@ -17,8 +17,14 @@ function Avaleht() {
 		uuendaKogus(0);
 	};
 
+	const tooted = JSON.parse(localStorage.getItem("tooted")) || [];
+
 	return (
 		<div>
+			{tooted.map((toode, i) => (
+				<div key={i}>{toode}</div>
+			))}
+
 			<h1>Avaleht</h1>
 			{like === true && (
 				<img onClick={() => uuendaLike(false)} src="/liked.svg" alt="" />
