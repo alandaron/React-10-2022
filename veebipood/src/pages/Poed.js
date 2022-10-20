@@ -1,14 +1,8 @@
 import { useRef, useState } from "react";
+import poedFailist from "../poed.json";
 
 function Poed() {
-	const [poed, uuendaPoed] = useState([
-		"Kristiine",
-		"Ülemiste",
-		"Mustamäe",
-		"Põhja-Tallinn",
-		"Kesklinn",
-		"Lasnamäe",
-	]);
+	const [poed, uuendaPoed] = useState(poedFailist);
 
 	const poeNimiRef = useRef();
 
