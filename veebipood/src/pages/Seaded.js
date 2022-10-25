@@ -4,7 +4,7 @@ function Seaded() {
 	const [keel, uuendaKeel] = useState(
 		localStorage.getItem("veebilehe_keel") || "EST"
 	);
-	const telRef = useRef(localStorage.getItem("telefon"));
+	const telRef = useRef();
 	const emailRef = useRef();
 
 	const muudaKeel = (uusKeel) => {
@@ -22,10 +22,18 @@ function Seaded() {
 			<div>Seaded</div>
 			<br />
 			<label>Telefon</label>
-			<input ref={telRef} type="text" />
+			<input
+				defaultValue={localStorage.getItem("telefon")}
+				ref={telRef}
+				type="text"
+			/>
 			<br />
 			<label>E-post</label>
-			<input ref={emailRef} type="text" />
+			<input
+				defaultValue={localStorage.getItem("email")}
+				ref={emailRef}
+				type="text"
+			/>
 			<br />
 			<button onClick={salvestaSeaded}>Salvesta</button>
 			<br />

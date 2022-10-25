@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Avaleht() {
 	const [like, uuendaLike] = useState(false);
@@ -19,10 +20,21 @@ function Avaleht() {
 
 	const tooted = JSON.parse(localStorage.getItem("tooted")) || [];
 
+	const lisaOstukorvi = (toode) => {
+		let ostukorv = localStorage.getItem("ostukorv");
+		ostukorv = JSON.parse(ostukorv) || [];
+		ostukorv.push(toode);
+		ostukorv = JSON.stringify(ostukorv);
+		localStorage.setItem("ostukorv", ostukorv);
+	};
+
 	return (
 		<div>
 			{tooted.map((toode, i) => (
-				<div key={i}>{toode}</div>
+				<div key={i}>
+					<Link to={"/toode/" + i}>{toode}</Link>
+					<button onClick={() => lisaOstukorvi(toode)}>Lisa ostukorvi</button>
+				</div>
 			))}
 
 			<h1>Avaleht</h1>
