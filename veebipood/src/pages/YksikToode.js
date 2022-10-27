@@ -7,7 +7,14 @@ function YksikToode() {
 
 	return (
 		<div>
-			{toode !== undefined && <div>{toode}</div>}
+			{toode !== undefined && (
+				<div>
+					<img width={100} src={toode.pilt} alt="pilt"></img>
+					<div>{toode.nimi}</div>
+					<div>{toode.hind}</div>
+					<div>{toode.aktiivne}</div>
+				</div>
+			)}
 			{toode === undefined && <div>Toodet ei leitud</div>}
 		</div>
 	);

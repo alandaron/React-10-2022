@@ -1,8 +1,9 @@
 [
-    "Kristiine",
-    "Ülemiste",
-    "Mustamäe",
-    "Põhja-Tallinn",
-    "Kesklinn",
-    "Lasnamäe"
+    {"nimi": "Kristiine", "aeg": "9-22"},
+    {"nimi": "Ülemiste", "aeg": "10-22"},
+    {"nimi": "Mustamäe", "aeg": "9-20"},
+    {"nimi": "Põhja-Tallinn", "aeg": "8-17"},
+    {"nimi": "Kesklinn", "aeg": "8-00"},
+    {"nimi": "Lasnamäe", "aeg": "10-19"},
+    {"nimi": "Kakumäe", "aeg": "11-23"} 
 ]

@@ -16,8 +16,11 @@ function HaldaTooteid() {
 		<div>
 			<div>Halda tooteid</div>
 			{tooted.map((toode, i) => (
-				<div key={i}>
-					{toode}
+				<div className={toode.aktiivne ? "active" : "inactive"} key={i}>
+					<img width={100} src={toode.pilt} alt="pilt"></img>
+					<div>{toode.nimi}</div>
+					<div>{toode.hind}</div>
+					{/* <div>{toode.aktiivne}</div> */}
 					<button onClick={() => kustuta(i)}>Kustuta</button>
 					<Link to={"/muuda-toode/" + i}>
 						<button>Muuda</button>

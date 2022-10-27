@@ -5,24 +5,30 @@ function Poed() {
 	const [poed, uuendaPoed] = useState(poedFailist);
 
 	const poeNimiRef = useRef();
+	const poeAegRef = useRef();
 
 	const lisaPood = () => {
-		uuendaPoed([...poed, poeNimiRef.current.value]);
+		uuendaPoed([
+			...poed,
+			{ nimi: poeNimiRef.current.value, aeg: poeAegRef.current.value },
+		]);
 	};
 
 	const sorteeriAZ = () => {
-		poed.sort();
+		poed.sort((a, b) => a.nimi.localeCompare(b.nimi));
+		//poed.sort();
 		uuendaPoed([...poed]);
 	};
 
 	const sorteeriZA = () => {
-		poed.sort();
-		poed.reverse();
+		poed.sort((a, b) => b.nimi.localeCompare(a.nimi));
+		//poed.sort();
+		//poed.reverse();
 		uuendaPoed([...poed]);
 	};
 
 	const filtreeri = () => {
-		const filtreeritudPoed = poed.filter((pood) => pood.includes("mäe"));
+		const filtreeritudPoed = poed.filter((pood) => pood.nimi.includes("mäe"));
 		uuendaPoed(filtreeritudPoed);
 	};
 
@@ -32,7 +38,10 @@ function Poed() {
 	};
 
 	const muudaSuureks = () => {
-		const vastus = poed.map((pood) => pood.toUpperCase());
+		const vastus = poed.map((pood) => {
+			return { ...pood, nimi: pood.nimi.toUpperCase() };
+		});
+
 		uuendaPoed(vastus);
 	};
 
@@ -44,7 +53,8 @@ function Poed() {
 			<button onClick={muudaSuureks}>Muuda igaüht</button>
 			{poed.map((pood, j2rjekorraNumber) => (
 				<div key={j2rjekorraNumber}>
-					<span>{pood}</span>
+					<div>{pood.nimi}</div>
+					<div>Lahtiolekuaeg: {pood.aeg}</div>
 					<button onClick={() => kustuta(j2rjekorraNumber)}>X</button>
 				</div>
 			))}
@@ -53,6 +63,11 @@ function Poed() {
 			<label>Uue poe nimi</label>
 			<br />
 			<input ref={poeNimiRef} type="text" />
+			<br />
+			<label>Uue poe lahtiolekuaeg</label>
+			<br />
+			<input ref={poeAegRef} type="text" />
+			<br />
 			<button onClick={lisaPood}>Lisa</button>
 			<br />
 			<br />

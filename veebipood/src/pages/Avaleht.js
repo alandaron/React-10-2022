@@ -30,12 +30,19 @@ function Avaleht() {
 
 	return (
 		<div>
-			{tooted.map((toode, i) => (
-				<div key={i}>
-					<Link to={"/toode/" + i}>{toode}</Link>
-					<button onClick={() => lisaOstukorvi(toode)}>Lisa ostukorvi</button>
-				</div>
-			))}
+			{tooted
+				.filter((toode) => toode.aktiivne === true)
+				.map((toode, i) => (
+					<div key={i}>
+						<Link to={"/toode/" + i}>
+							<img width={100} src={toode.pilt} alt="pilt"></img>
+							<div>{toode.nimi}</div>
+							<div>{toode.hind}</div>
+							<div>{toode.aktiivne}</div>
+						</Link>
+						<button onClick={() => lisaOstukorvi(toode)}>Lisa ostukorvi</button>
+					</div>
+				))}
 
 			<h1>Avaleht</h1>
 			{like === true && (

@@ -22,3 +22,13 @@
 .pilt:hover {
   opacity: 0.7;
 }
+
+.active {
+  border: 1px solid green;
+  background-color: rgba(24, 221, 24, 0.228);
+}
+
+.inactive {
+  border: 1px solid red;
+  background-color: rgba(221, 24, 24, 0.228);
+}
