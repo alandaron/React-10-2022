@@ -3,6 +3,7 @@ import "./App.css";
 import Kasutajad from "./pages/Kasutajad";
 import Tagasiside from "./pages/Tagasiside";
 import TagasideAndja from "./pages/TagasisideAndja";
+import Tegevused from "./pages/Tegevused";
 
 function App() {
 	return (
@@ -19,12 +20,16 @@ function App() {
 			<Link to="/kasutajad">
 				<button>Kasutajad</button>
 			</Link>
+			<Link to="/tegevused">
+				<button>Tegevused</button>
+			</Link>
 
 			<Routes>
 				<Route path="" element={<div>Tere</div>} />
 				<Route path="tagasiside" element={<Tagasiside />} />
 				<Route path="tagasiside-andja" element={<TagasideAndja />} />
 				<Route path="kasutajad" element={<Kasutajad />} />
+				<Route path="tegevused" element={<Tegevused />} />
 			</Routes>
 		</div>
 	);
