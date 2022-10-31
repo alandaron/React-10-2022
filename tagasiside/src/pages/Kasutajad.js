@@ -2,10 +2,10 @@ import { useState } from "react";
 import kasutajadFailist from "../users.json";
 
 function Kasutajad() {
-	const [kasutajad, uuendaKasutajad] = useState([...kasutajadFailist]);
+	const [kasutajad, uuendaKasutajad] = useState([...kasutajadFailist]); // peab ka koopia tegema?
 
 	const laeKasutajad = () => {
-		// Miks see kirjutab üle ka .json faili?
+		// Miks see kirjutab üle ka .json faili kui olen kustutanud kasutajaid?
 		// uuendaKasutajad(kasutajadFailist);
 		uuendaKasutajad([...kasutajadFailist]);
 	};
