@@ -1,0 +1,13 @@
+.language-flag {
+    width: 24px;
+    margin: 0 10px;
+}
+
+.language-flag:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.language-flag:active {
+    padding: 1px;
+}
