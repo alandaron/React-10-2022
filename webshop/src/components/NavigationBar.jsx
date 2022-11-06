@@ -49,6 +49,12 @@ function NavigationBar() {
 					alt="turkish"
 					className="language-flag"
 				/>
+				<img
+					onClick={() => changeLang("tur")}
+					src={require("../images/germany.png")}
+					alt="germany"
+					className="language-flag"
+				/>
 			</Container>
 		</Navbar>
 	);
