@@ -1,12 +1,12 @@
-import productsFromFile from "../data/products.json";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import productsFromFile from "../data/products.json";
 
 // Bootstrap
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { useState } from "react";
 
 function HomePage() {
 	const { t } = useTranslation();

@@ -6,17 +6,17 @@ import "./App.css";
 import Container from "react-bootstrap/Container";
 
 // Pages
-import HomePage from "./pages/HomePage";
+import NavigationBar from "./components/NavigationBar";
+import AddProduct from "./pages/admin/AddProduct";
+import AdminHome from "./pages/admin/AdminHome";
+import EditProduct from "./pages/admin/EditProduct";
+import MaintainCategories from "./pages/admin/MaintainCategories";
+import MaintainProducts from "./pages/admin/MaintainProducts";
+import MaintainShops from "./pages/admin/MaintainShops";
 import Cart from "./pages/Cart";
+import HomePage from "./pages/HomePage";
 import Shops from "./pages/Shops";
 import SingleProduct from "./pages/SingleProduct";
-import AdminHome from "./pages/admin/AdminHome";
-import AddProduct from "./pages/admin/AddProduct";
-import EditProduct from "./pages/admin/EditProduct";
-import MaintainProducts from "./pages/admin/MaintainProducts";
-import MaintainCategories from "./pages/admin/MaintainCategories";
-import MaintainShops from "./pages/admin/MaintainShops";
-import NavigationBar from "./components/NavigationBar";
 
 function App() {
 	return (
