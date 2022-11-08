@@ -50,9 +50,17 @@ function HomePage() {
 	};
 
 	const addToCart = (product) => {
-		let cart = JSON.parse(localStorage.getItem("cart")) || [];
-		cart.push(product);
-		localStorage.setItem("cart", JSON.stringify(cart));
+		let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+		// findIndex returnib numbri ehk indexi; -1 kui ei leitud
+		const productInCartIndex = cart.findIndex(
+			(element) => element.product_id === product.id
+		);
+		if (productInCartIndex >= 0) {
+			cart[productInCartIndex].quantity += 1;
+		} else {
+			cart.push({ product_id: product.id, quantity: 1 });
+		}
+		sessionStorage.setItem("cart", JSON.stringify(cart));
 	};
 
 	return (
@@ -70,7 +78,7 @@ function HomePage() {
 			<button onClick={sortPriceAsc}>Sorteeri hind kasvavalt</button>
 			<button onClick={sortPriceDesc}>Sorteeri hind kahanevalt</button>
 			<Row className="g-4">
-				{productsFromFile.map((product) => (
+				{products.map((product) => (
 					<Col key={product.id}>
 						<Card style={{ width: "18rem", height: "32em" }}>
 							<Card.Img

@@ -1,7 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import Button from "react-bootstrap/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import productsFromFile from "../../data/products.json";
-import Button from "react-bootstrap/Button";
 
 function EditProduct() {
 	const { id } = useParams();
@@ -33,14 +33,45 @@ function EditProduct() {
 		navigate("/admin/maintain-products");
 	};
 
+	const [idUnique, setIdUnique] = useState(true);
+
+	const checkIdUniqueness = () => {
+		if (idRef.current.value === "") {
+			setIdUnique(false);
+			return;
+		}
+
+		if (idRef.current.value === id) {
+			setIdUnique(true);
+			return; // sellega lõpetab funktsiooni
+		}
+
+		const result = productsFromFile.find(
+			(element) => element.id === Number(idRef.current.value)
+		);
+
+		if (result === undefined) {
+			setIdUnique(true);
+			return;
+		}
+
+		setIdUnique(false);
+	};
+
 	return (
 		<div>
 			{product === undefined && <div>Toodet ei leitud.</div>}
 			{product !== undefined && (
 				<div>
+					{idUnique === false && <div>Sisestatud ID on juba kasutusel!</div>}
 					<label>ID</label>
 					<br />
-					<input defaultValue={product.id} ref={idRef} type="number"></input>
+					<input
+						onChange={checkIdUniqueness}
+						defaultValue={product.id}
+						ref={idRef}
+						type="number"
+					></input>
 					<br />
 					<label>Name</label>
 					<br />
@@ -85,7 +116,9 @@ function EditProduct() {
 						type="checkbox"
 					></input>
 					<br />
-					<Button onClick={save}>Save</Button>
+					<Button disabled={!idUnique} onClick={save}>
+						Save
+					</Button>
 				</div>
 			)}
 		</div>

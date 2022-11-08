@@ -1,0 +1,28 @@
+.product {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 5%;
+    padding: 15px 0;
+    border-bottom: 1px solid lightgrey;
+    align-items: center;
+}
+
+.name {
+
+}
+
+.price {
+
+}
+
+.image {
+
+}
+
+.quantity {
+
+}
+
+.button {
+    height: 50px;
+}

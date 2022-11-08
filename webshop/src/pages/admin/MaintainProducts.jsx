@@ -1,15 +1,11 @@
-import productsFromFile from "../../data/products.json";
-import Button from "react-bootstrap/Button";
 import { useRef, useState } from "react";
+import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
+import productsFromFile from "../../data/products.json";
 
 function MaintainProducts() {
 	const [products, setProducts] = useState(productsFromFile.slice());
 	const searchedProduct = useRef();
-	const deleteProduct = (productIndex) => {
-		products.splice(productIndex, 1);
-		setProducts(products.slice());
-	};
 
 	const search = () => {
 		// proovige filterdada (leida) nime alusel toode üles
@@ -20,11 +16,20 @@ function MaintainProducts() {
 		);
 		setProducts(result);
 	};
+
+	const deleteProduct = (product) => {
+		const productIndex = productsFromFile.findIndex(
+			(element) => element.id === product.id
+		);
+		productsFromFile.splice(productIndex, 1);
+		setProducts([...productsFromFile]);
+	};
+
 	return (
 		<div>
 			<input ref={searchedProduct} onKeyUp={search} type="text" />
 			<span>Tooteid kokku {products.length}</span>
-			{products.map((element, index) => (
+			{products.map((element) => (
 				<div key={element.id}>
 					<img src={element.image} alt="" />
 					<div>{element.name}</div>
@@ -32,7 +37,7 @@ function MaintainProducts() {
 					<Link to={"/admin/edit-product/" + element.id}>
 						<Button>Muuda</Button>
 					</Link>
-					<Button onClick={() => deleteProduct(index)}>Kustuta</Button>
+					<Button onClick={() => deleteProduct(element)}>Kustuta</Button>
 				</div>
 			))}
 		</div>
