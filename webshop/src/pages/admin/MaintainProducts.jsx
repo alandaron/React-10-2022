@@ -1,15 +1,26 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
-import productsFromFile from "../../data/products.json";
+// import productsFromFile from "../../data/products.json";
+import config from "../../data/config.json";
 
 function MaintainProducts() {
-	const [products, setProducts] = useState(productsFromFile.slice());
+	const [dbProducts, setDbProducts] = useState([]);
+	const [products, setProducts] = useState([]);
 	const searchedProduct = useRef();
+
+	useEffect(() => {
+		fetch(config.productsDbUrl)
+			.then((res) => res.json())
+			.then((json) => {
+				setProducts(json);
+				setDbProducts(json);
+			});
+	}, []);
 
 	const search = () => {
 		// proovige filterdada (leida) nime alusel toode üles
-		const result = productsFromFile.filter((element) =>
+		const result = dbProducts.filter((element) =>
 			element.name
 				.toLowerCase()
 				.includes(searchedProduct.current.value.toLowerCase())
@@ -18,11 +29,11 @@ function MaintainProducts() {
 	};
 
 	const deleteProduct = (product) => {
-		const productIndex = productsFromFile.findIndex(
-			(element) => element.id === product.id
-		);
-		productsFromFile.splice(productIndex, 1);
-		setProducts([...productsFromFile]);
+		// const productIndex = dbProducts.findIndex(
+		// 	(element) => element.id === product.id
+		// );
+		// dbProducts.splice(productIndex, 1);
+		// setProducts([...dbProducts]);
 	};
 
 	return (

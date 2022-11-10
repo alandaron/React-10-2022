@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import config from "../data/config.json";
 
 import "../css/cart.css";
-import productsFromFile from "../data/products.json";
+// import productsFromFile from "../data/products.json";
 
 // Bootstrap
 import Button from "react-bootstrap/Button";
@@ -29,15 +31,19 @@ function Cart() {
 				)
 			);
 
-		const cartWithProducts = cart.map((element) => {
-			return {
-				product: productsFromFile.find(
-					(product) => product.id === element.product_id
-				),
-				quantity: element.quantity,
-			};
-		});
-		setProducts(cartWithProducts);
+		fetch(config.productsDbUrl)
+			.then((res) => res.json())
+			.then((json) => {
+				const cartWithProducts = cart.map((element) => {
+					return {
+						product: json.find((product) => product.id === element.product_id),
+						quantity: element.quantity,
+					};
+				});
+				setProducts(
+					cartWithProducts.filter((element) => element.product !== undefined)
+				);
+			});
 	}, [cart]);
 
 	const removeFromCart = (productIndex) => {
@@ -61,42 +67,90 @@ function Cart() {
 		return total.toFixed(2);
 	};
 
+	const decreaseQuantity = (productIndex) => {
+		cart[productIndex].quantity -= 1;
+		sessionStorage.setItem("cart", JSON.stringify(cart));
+
+		if (cart[productIndex].quantity <= 0) {
+			removeFromCart(productIndex);
+		}
+
+		products[productIndex].quantity -= 1;
+		setProducts([...products]);
+	};
+
+	const increaseQuantity = (productIndex) => {
+		cart[productIndex].quantity += 1;
+		sessionStorage.setItem("cart", JSON.stringify(cart));
+
+		products[productIndex].quantity += 1;
+		setProducts([...products]);
+	};
+
 	return (
 		<div>
 			{products.length > 0 && (
-				<div>
+				<div className="empty-cart-btn">
 					<Button onClick={emptyCart}>{t("empty_cart")}</Button>
-					<div>
-						{t("total_products")}: {products.length}
+				</div>
+			)}
+			{products.length === 0 && (
+				<div>
+					{t("cart_empty")} <Link to="/">{t("go_shopping_link")}</Link>
+				</div>
+			)}
+
+			{products.map((element, i) => (
+				<div className="product" key={element.id}>
+					<img className="image" alt="" src={element.product.image} />
+					<div className="name">{element.product.name}</div>
+					<div className="price">{element.product.price} € / tk</div>
+					<div className="quantity">
+						<img
+							className="button"
+							onClick={() => decreaseQuantity(i)}
+							src={require("../images/minus.png")}
+							alt=""
+						/>
+						<div>{element.quantity} tk</div>
+						<img
+							className="button"
+							onClick={() => increaseQuantity(i)}
+							src={require("../images/add.png")}
+							alt=""
+						/>
 					</div>
-					<div>
-						{t("total_price")}: {calculateCartSum()} €
+					<div>{(element.product.price * element.quantity).toFixed(2)} €</div>
+
+					<img
+						className="button"
+						onClick={() => removeFromCart(i)}
+						src={require("../images/trash.png")}
+						alt=""
+					/>
+				</div>
+			))}
+
+			{products.length > 0 && (
+				<div>
+					<div className="info-box">
+						<div>
+							{t("total_products")}: {products.length}
+						</div>
+						<div>
+							{t("total_price")}: {calculateCartSum()} €
+						</div>
+					</div>
+					<div className="parcel-machine">
+						<Form.Label>Vali pakiautomaat:</Form.Label>
+						<Form.Select>
+							{parcelMachines.map((machine) => (
+								<option key={machine.NAME}>{machine.NAME}</option>
+							))}
+						</Form.Select>
 					</div>
 				</div>
 			)}
-			{products.length === 0 && <div>{t("cart_empty")}</div>}
-
-			<Form.Select>
-				{parcelMachines.map((machine) => (
-					<option key={machine.NAME}>{machine.NAME}</option>
-				))}
-			</Form.Select>
-
-			{products.map((product, i) => (
-				<div className="product" key={product.id}>
-					<img className="image" alt="" src={product.product.image} />
-					<div className="name">{product.product.name}</div>
-					<div className="price">{product.product.price} €</div>
-					<div className="quantity">{product.quantity} tk</div>
-					<Button
-						className="button"
-						onClick={() => removeFromCart(i)}
-						variant="danger"
-					>
-						{t("remove_from_cart")}
-					</Button>
-				</div>
-			))}
 		</div>
 	);
 }

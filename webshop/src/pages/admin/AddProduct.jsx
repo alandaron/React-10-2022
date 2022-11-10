@@ -1,9 +1,12 @@
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import productsFromFile from "../../data/products.json";
+import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
+// import productsFromFile from "../../data/products.json";
+import config from "../../data/config.json";
 
 function AddProduct() {
+	const [dbProducts, setDbProducts] = useState([]);
+
 	const idRef = useRef();
 	const nameRef = useRef();
 	const priceRef = useRef();
@@ -13,6 +16,14 @@ function AddProduct() {
 	const activeRef = useRef();
 
 	const navigate = useNavigate();
+
+	const [idUnique, setIdUnique] = useState(true);
+
+	useEffect(() => {
+		fetch(config.productsDbUrl)
+			.then((res) => res.json())
+			.then((json) => setDbProducts(json));
+	}, []);
 
 	const save = () => {
 		const newProduct = {
@@ -24,16 +35,36 @@ function AddProduct() {
 			description: descriptionRef.current.value,
 			active: activeRef.current.checked,
 		};
-		productsFromFile.push(newProduct);
+		dbProducts.push(newProduct);
+
 		navigate("/admin/maintain-products");
+	};
+
+	const checkIdUniqueness = () => {
+		if (idRef.current.value === "") {
+			setIdUnique(false);
+			return;
+		}
+
+		const result = dbProducts.find(
+			(element) => element.id === Number(idRef.current.value)
+		);
+
+		if (result === undefined) {
+			setIdUnique(true);
+			return;
+		}
+
+		setIdUnique(false);
 	};
 
 	return (
 		<div>
 			<div>
+				{idUnique === false && <div>Sisestatud ID on juba kasutusel!</div>}
 				<label>ID</label>
 				<br />
-				<input ref={idRef} type="number"></input>
+				<input ref={idRef} type="number" onChange={checkIdUniqueness}></input>
 				<br />
 				<label>Name</label>
 				<br />
@@ -58,7 +89,9 @@ function AddProduct() {
 				<label>Active</label>
 				<input ref={activeRef} type="checkbox"></input>
 				<br />
-				<Button onClick={save}>Save</Button>
+				<Button disabled={!idUnique} onClick={save}>
+					Save
+				</Button>
 			</div>
 		</div>
 	);

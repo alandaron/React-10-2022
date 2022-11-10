@@ -7,22 +7,51 @@
     align-items: center;
 }
 
-.name {
+.image {
+    width: 10%;
+}
 
+.name {
+    width: 100px;
 }
 
 .price {
-
-}
-
-.image {
-
+    width: 80px;
 }
 
 .quantity {
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid;
+    border-radius: 20px;
+    padding: 2px;
+}
 
+.empty-cart-btn {
+    margin: 3% 5%;
+    text-align: right;
 }
 
 .button {
-    height: 50px;
+    height: 32px;
+    width: 32px;
+}
+
+.info-box {
+    margin: 0 5%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content:space-between;
+}
+
+.parcel-machine {
+    
+    margin: 0 5%;
+}
+
+.button:hover {
+    cursor: pointer;
+    opacity: 0.7;
 }

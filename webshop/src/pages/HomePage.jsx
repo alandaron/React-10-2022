@@ -1,19 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import productsFromFile from "../data/products.json";
+// import productsFromFile from "../data/products.json";
+import config from "../data/config.json";
 
 // Bootstrap
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import Spinner from "react-bootstrap/Spinner";
+
+// React toastify
+import { toast, ToastContainer } from "react-toastify";
 
 function HomePage() {
 	const { t } = useTranslation();
-	const [products, setProducts] = useState([...productsFromFile]);
+	const [dbProducts, setDbProducts] = useState([]);
+	const [products, setProducts] = useState([]);
 	const categories = [
-		...new Set(productsFromFile.map((product) => product.category)),
+		...new Set(dbProducts.map((product) => product.category)),
 	];
+	// const productsFromDatabaseUrl =
+	// 	"https://react-aron-db-default-rtdb.europe-west1.firebasedatabase.app/products.json";
+
+	useEffect(() => {
+		fetch(config.productsDbUrl)
+			.then((res) => res.json())
+			.then((json) => {
+				setProducts(json);
+				setDbProducts(json);
+			});
+	}, []);
 
 	// sorteerimine .sort localeCompare
 	// võtame kõik kategooriad toodete küljest ja kuvame need
@@ -43,7 +60,7 @@ function HomePage() {
 	};
 
 	const filterByCategory = (categoryClicked) => {
-		const result = productsFromFile.filter(
+		const result = dbProducts.filter(
 			(product) => product.category === categoryClicked
 		);
 		setProducts(result);
@@ -61,7 +78,15 @@ function HomePage() {
 			cart.push({ product_id: product.id, quantity: 1 });
 		}
 		sessionStorage.setItem("cart", JSON.stringify(cart));
+		toast.success("Toode lisati ostukorvi!", {
+			position: "bottom-right",
+			theme: "light",
+		});
 	};
+
+	if (products.length === 0) {
+		return <Spinner animation="border" />;
+	}
 
 	return (
 		<div>
@@ -102,6 +127,7 @@ function HomePage() {
 					</Col>
 				))}
 			</Row>
+			<ToastContainer />
 		</div>
 	);
 }

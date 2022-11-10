@@ -1,12 +1,14 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import productsFromFile from "../../data/products.json";
+// import productsFromFile from "../../data/products.json";
+import config from "../../data/config.json";
 
 function EditProduct() {
 	const { id } = useParams();
-	const product = productsFromFile.find((product) => product.id === Number(id));
-	const productIndex = productsFromFile.indexOf(product);
+	const [dbProducts, setDbProducts] = useState([]);
+	const product = dbProducts.find((product) => product.id === Number(id));
+	const productIndex = dbProducts.indexOf(product);
 
 	const idRef = useRef();
 	const nameRef = useRef();
@@ -18,6 +20,15 @@ function EditProduct() {
 
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		fetch(config.productsDbUrl)
+			.then((res) => res.json())
+			.then((json) => {
+				// setProducts(json);
+				setDbProducts(json);
+			});
+	}, []);
+
 	const save = () => {
 		const updatedProduct = {
 			id: Number(idRef.current.value),
@@ -28,8 +39,8 @@ function EditProduct() {
 			description: descriptionRef.current.value,
 			active: activeRef.current.checked,
 		};
-		productsFromFile[productIndex] = updatedProduct;
-		console.log(productsFromFile[productIndex]);
+		dbProducts[productIndex] = updatedProduct;
+		console.log(dbProducts[productIndex]);
 		navigate("/admin/maintain-products");
 	};
 
@@ -46,7 +57,7 @@ function EditProduct() {
 			return; // sellega lõpetab funktsiooni
 		}
 
-		const result = productsFromFile.find(
+		const result = dbProducts.find(
 			(element) => element.id === Number(idRef.current.value)
 		);
 
