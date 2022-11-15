@@ -1,3 +1,4 @@
 {
-    "productsDbUrl": "https://react-aron-db-default-rtdb.europe-west1.firebasedatabase.app/products.json"
+    "productsDbUrl": "https://react-aron-db-default-rtdb.europe-west1.firebasedatabase.app/products.json",
+    "categoriesDbUrl": "https://react-aron-db-default-rtdb.europe-west1.firebasedatabase.app/categories.json"
 }

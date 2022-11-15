@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
 // import productsFromFile from "../../data/products.json";
+import { toast, ToastContainer } from "react-toastify";
 import config from "../../data/config.json";
 
 function AddProduct() {
 	const [dbProducts, setDbProducts] = useState([]);
+	const [categories, setCategories] = useState([]);
 
 	const idRef = useRef();
 	const nameRef = useRef();
@@ -15,14 +16,16 @@ function AddProduct() {
 	const descriptionRef = useRef();
 	const activeRef = useRef();
 
-	const navigate = useNavigate();
-
-	const [idUnique, setIdUnique] = useState(true);
+	const [idUnique, setIdUnique] = useState(false);
 
 	useEffect(() => {
 		fetch(config.productsDbUrl)
 			.then((res) => res.json())
-			.then((json) => setDbProducts(json));
+			.then((json) => setDbProducts(json) || []);
+
+		fetch(config.categoriesDbUrl)
+			.then((res) => res.json())
+			.then((json) => setCategories(json || []));
 	}, []);
 
 	const save = () => {
@@ -37,7 +40,21 @@ function AddProduct() {
 		};
 		dbProducts.push(newProduct);
 
-		navigate("/admin/maintain-products");
+		fetch(config.productsDbUrl, {
+			method: "PUT",
+			body: JSON.stringify(dbProducts),
+		}).then(() => {
+			idRef.current.value = "";
+			nameRef.current.value = "";
+			priceRef.current.value = "";
+			imageRef.current.value = "";
+			descriptionRef.current.value = "";
+			activeRef.current.checked = false;
+			toast.success("Uus toode lisatud", {
+				position: "bottom-right",
+				theme: "light",
+			});
+		});
 	};
 
 	const checkIdUniqueness = () => {
@@ -76,7 +93,11 @@ function AddProduct() {
 				<br />
 				<label>Category</label>
 				<br />
-				<input ref={categoryRef} type="text"></input>
+				<select ref={categoryRef} type="text">
+					{categories.map((element, i) => (
+						<option key={i}>{element.name}</option>
+					))}
+				</select>
 				<br />
 				<label>Image</label>
 				<br />
@@ -93,6 +114,7 @@ function AddProduct() {
 					Save
 				</Button>
 			</div>
+			<ToastContainer />
 		</div>
 	);
 }

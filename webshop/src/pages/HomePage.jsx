@@ -17,9 +17,7 @@ function HomePage() {
 	const { t } = useTranslation();
 	const [dbProducts, setDbProducts] = useState([]);
 	const [products, setProducts] = useState([]);
-	const categories = [
-		...new Set(dbProducts.map((product) => product.category)),
-	];
+	const [categories, setCategories] = useState([]);
 	// const productsFromDatabaseUrl =
 	// 	"https://react-aron-db-default-rtdb.europe-west1.firebasedatabase.app/products.json";
 
@@ -27,8 +25,14 @@ function HomePage() {
 		fetch(config.productsDbUrl)
 			.then((res) => res.json())
 			.then((json) => {
-				setProducts(json);
-				setDbProducts(json);
+				setProducts(json || []);
+				setDbProducts(json || []);
+			});
+
+		fetch(config.categoriesDbUrl)
+			.then((res) => res.json())
+			.then((json) => {
+				setCategories(json || []);
 			});
 	}, []);
 
@@ -66,6 +70,10 @@ function HomePage() {
 		setProducts(result);
 	};
 
+	const showAllProducts = () => {
+		setProducts([...dbProducts]);
+	};
+
 	const addToCart = (product) => {
 		let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
 		// findIndex returnib numbri ehk indexi; -1 kui ei leitud
@@ -90,9 +98,10 @@ function HomePage() {
 
 	return (
 		<div>
-			{categories.map((element) => (
-				<button key={element} onClick={() => filterByCategory(element)}>
-					{element}
+			<button onClick={showAllProducts}>Kõik tooted</button>
+			{categories.map((element, i) => (
+				<button key={i} onClick={() => filterByCategory(element.name)}>
+					{element.name}
 				</button>
 			))}
 
@@ -103,29 +112,31 @@ function HomePage() {
 			<button onClick={sortPriceAsc}>Sorteeri hind kasvavalt</button>
 			<button onClick={sortPriceDesc}>Sorteeri hind kahanevalt</button>
 			<Row className="g-4">
-				{products.map((product) => (
-					<Col key={product.id}>
-						<Card style={{ width: "18rem", height: "32em" }}>
-							<Card.Img
-								style={{ height: 250, objectFit: "cover" }}
-								variant="top"
-								src={product.image}
-							/>
-							<Card.Body>
-								<Card.Title>{product.name}</Card.Title>
-								<Card.Text>{product.price}€</Card.Text>
-								<Card.Text>{product.description}</Card.Text>
-								<Button
-									style={{ bottom: 10, position: "absolute" }}
-									onClick={() => addToCart(product)}
-									variant="primary"
-								>
-									{t("add_to_cart")}
-								</Button>
-							</Card.Body>
-						</Card>
-					</Col>
-				))}
+				{products
+					.filter((product) => product.active === true)
+					.map((product) => (
+						<Col key={product.id}>
+							<Card style={{ width: "18rem", height: "32em" }}>
+								<Card.Img
+									style={{ height: 250, objectFit: "cover" }}
+									variant="top"
+									src={product.image}
+								/>
+								<Card.Body>
+									<Card.Title>{product.name}</Card.Title>
+									<Card.Text>{product.price}€</Card.Text>
+									<Card.Text>{product.description}</Card.Text>
+									<Button
+										style={{ bottom: 10, position: "absolute" }}
+										onClick={() => addToCart(product)}
+										variant="primary"
+									>
+										{t("add_to_cart")}
+									</Button>
+								</Card.Body>
+							</Card>
+						</Col>
+					))}
 			</Row>
 			<ToastContainer />
 		</div>

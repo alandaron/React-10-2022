@@ -2,11 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { useNavigate, useParams } from "react-router-dom";
 // import productsFromFile from "../../data/products.json";
+import Spinner from "react-bootstrap/Spinner";
 import config from "../../data/config.json";
 
 function EditProduct() {
 	const { id } = useParams();
 	const [dbProducts, setDbProducts] = useState([]);
+	const [categories, setCategories] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 	const product = dbProducts.find((product) => product.id === Number(id));
 	const productIndex = dbProducts.indexOf(product);
 
@@ -21,11 +24,19 @@ function EditProduct() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		setIsLoading(true);
+
+		fetch(config.categoriesDbUrl)
+			.then((res) => res.json())
+			.then((json) => {
+				setCategories(json || []);
+			});
+
 		fetch(config.productsDbUrl)
 			.then((res) => res.json())
 			.then((json) => {
-				// setProducts(json);
 				setDbProducts(json);
+				setIsLoading(false);
 			});
 	}, []);
 
@@ -40,8 +51,13 @@ function EditProduct() {
 			active: activeRef.current.checked,
 		};
 		dbProducts[productIndex] = updatedProduct;
-		console.log(dbProducts[productIndex]);
-		navigate("/admin/maintain-products");
+
+		fetch(config.productsDbUrl, {
+			method: "PUT",
+			body: JSON.stringify(dbProducts),
+		}).then(() => {
+			navigate("/admin/maintain-products");
+		});
 	};
 
 	const [idUnique, setIdUnique] = useState(true);
@@ -68,6 +84,14 @@ function EditProduct() {
 
 		setIdUnique(false);
 	};
+
+	if (isLoading) {
+		return (
+			<div>
+				<Spinner animation="border" />
+			</div>
+		);
+	}
 
 	return (
 		<div>
@@ -98,11 +122,11 @@ function EditProduct() {
 					<br />
 					<label>Category</label>
 					<br />
-					<input
-						defaultValue={product.category}
-						ref={categoryRef}
-						type="text"
-					></input>
+					<select ref={categoryRef} defaultValue={product.category} type="text">
+						{categories.map((element, i) => (
+							<option key={i}>{element.name}</option>
+						))}
+					</select>
 					<br />
 					<label>Image</label>
 					<br />

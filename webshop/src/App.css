@@ -11,3 +11,13 @@
 .language-flag:active {
     padding: 1px;
 }
+
+.productActive {
+    border: 1px solid green;
+    background-color: rgba(114, 253, 39, 0.14);
+}
+
+.productInactive {
+    border: 1px solid rgb(128, 0, 0);
+    background-color: rgba(255, 33, 33, 0.271);
+}
