@@ -6,6 +6,7 @@ import "./App.css";
 import Container from "react-bootstrap/Container";
 
 // Pages
+import Footer from "./components/Footer";
 import NavigationBar from "./components/NavigationBar";
 import AddProduct from "./pages/admin/AddProduct";
 import AdminHome from "./pages/admin/AdminHome";
@@ -14,6 +15,7 @@ import MaintainCategories from "./pages/admin/MaintainCategories";
 import MaintainProducts from "./pages/admin/MaintainProducts";
 import MaintainShops from "./pages/admin/MaintainShops";
 import Cart from "./pages/Cart";
+import Contact from "./pages/Contact";
 import HomePage from "./pages/HomePage";
 import Shops from "./pages/Shops";
 import SingleProduct from "./pages/SingleProduct";
@@ -25,6 +27,7 @@ function App() {
 			<Container fluid>
 				<Routes>
 					<Route path="" element={<HomePage />} />
+					<Route path="contact" element={<Contact />} />
 					<Route path="cart" element={<Cart />} />
 					<Route path="shops" element={<Shops />} />
 					<Route path="product" element={<SingleProduct />} />
@@ -42,6 +45,8 @@ function App() {
 					<Route path="admin/maintain-shops" element={<MaintainShops />} />
 				</Routes>
 			</Container>
+
+			<Footer />
 		</div>
 	);
 }

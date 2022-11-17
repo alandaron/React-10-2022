@@ -7,30 +7,23 @@ import "../css/cart.css";
 // import productsFromFile from "../data/products.json";
 
 // Bootstrap
+import { Spinner } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import ParcelMachines from "../components/ParcelMachines";
+import Payment from "../components/Payment";
 
 function Cart() {
 	const { t } = useTranslation();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const cart = useMemo(
 		() => JSON.parse(sessionStorage.getItem("cart")) || [],
 		[]
 	);
 	const [products, setProducts] = useState([]);
-	const [parcelMachines, setParcelMachines] = useState([]);
 
 	useEffect(() => {
-		fetch("https://www.omniva.ee/locations.json")
-			.then((res) => res.json())
-			.then((json) =>
-				setParcelMachines(
-					json.filter(
-						(machine) => machine.A0_NAME === "EE" && machine.ZIP !== "96331"
-					)
-				)
-			);
-
+		setIsLoading(true);
 		fetch(config.productsDbUrl)
 			.then((res) => res.json())
 			.then((json) => {
@@ -43,6 +36,7 @@ function Cart() {
 				setProducts(
 					cartWithProducts.filter((element) => element.product !== undefined)
 				);
+				setIsLoading(false);
 			});
 	}, [cart]);
 
@@ -86,6 +80,10 @@ function Cart() {
 		products[productIndex].quantity += 1;
 		setProducts([...products]);
 	};
+
+	if (isLoading) {
+		return <Spinner animation="border" />;
+	}
 
 	return (
 		<div>
@@ -141,13 +139,10 @@ function Cart() {
 							{t("total_price")}: {calculateCartSum()} €
 						</div>
 					</div>
-					<div className="parcel-machine">
-						<Form.Label>Vali pakiautomaat:</Form.Label>
-						<Form.Select>
-							{parcelMachines.map((machine) => (
-								<option key={machine.NAME}>{machine.NAME}</option>
-							))}
-						</Form.Select>
+					<div className="end-box">
+						<ParcelMachines />
+						<br />
+						<Payment sum={calculateCartSum()} />
 					</div>
 				</div>
 			)}
