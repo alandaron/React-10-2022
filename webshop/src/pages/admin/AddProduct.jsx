@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 // import productsFromFile from "../../data/products.json";
 import { toast, ToastContainer } from "react-toastify";
+import FileUpload from "../../components/FileUpload";
 import config from "../../data/config.json";
 
 function AddProduct() {
 	const [dbProducts, setDbProducts] = useState([]);
 	const [categories, setCategories] = useState([]);
+	const [imageUrl, setImageUrl] = useState("");
 
 	const idRef = useRef();
 	const nameRef = useRef();
@@ -34,7 +36,7 @@ function AddProduct() {
 			name: nameRef.current.value,
 			price: Number(priceRef.current.value),
 			category: categoryRef.current.value,
-			image: imageRef.current.value,
+			image: imageUrl,
 			description: descriptionRef.current.value,
 			active: activeRef.current.checked,
 		};
@@ -101,7 +103,8 @@ function AddProduct() {
 				<br />
 				<label>Image</label>
 				<br />
-				<input ref={imageRef} type="text"></input>
+				<FileUpload onSendPictureUrl={setImageUrl} />
+				{/* <input ref={imageRef} type="text"></input> */}
 				<br />
 				<label>Description</label>
 				<br />

@@ -1,0 +1,28 @@
+{
+    "translation": {
+        "nav": {
+            "admin": "To admin view",
+            "shops": "Our shops",
+            "cart": "Cart"
+        },
+        "add_to_cart": "Add to cart",
+        "added_to_cart": "Product added to cart!",
+        "remove_from_cart": "Remove from cart",
+        "empty_cart": "Empty cart",
+        "cart_empty": "Cart is empty",
+        "go_shopping_link": "Go shopping",
+        "total_products": "Total products",
+        "total_price": "Total price",
+        "firebase": {
+            "USER_DISABLED": "User disabled",
+            "INVALID_EMAIL": "Invalid email!",
+            "EMAIL_NOT_FOUND": "Email not found",
+            "EMAIL_EXISTS": "Email exists",
+            "MISSING_PASSWORD": "Missing password!",
+            "INVALID_PASSWORD": "Invalid password!",
+            "WEAK_PASSWORD : Password should be at least 6 characters": "Password should be at least 6 characters",
+            "TOO_MANY_ATTEMPTS_TRY_LATER": "Too many attempts, try later"
+        }
+        
+    }
+}

@@ -7,12 +7,18 @@ import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
 import "./i18n";
 import "./index.css";
+import { AuthContextProvider } from "./store/AuthContext";
+import { CartSumContextProvider } from "./store/CartSumContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
 		<BrowserRouter>
-			<App />
+			<AuthContextProvider>
+				<CartSumContextProvider>
+					<App />
+				</CartSumContextProvider>
+			</AuthContextProvider>
 		</BrowserRouter>
 	</React.StrictMode>
 );

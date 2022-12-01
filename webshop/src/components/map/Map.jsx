@@ -33,8 +33,8 @@ function Map(props) {
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 
-				{props.shops?.map((element) => (
-					<Marker position={element.lngLat}>
+				{props.shops?.map((element, i) => (
+					<Marker key={i} position={element.lngLat}>
 						<Popup>
 							{element.name} <br /> {element.info}
 						</Popup>

@@ -3,18 +3,21 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import config from "../data/config.json";
 
-import "../css/cart.css";
+import styles from "../css/Cart.module.css";
 // import productsFromFile from "../data/products.json";
 
 // Bootstrap
+import { useContext } from "react";
 import { Spinner } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import ParcelMachines from "../components/ParcelMachines";
-import Payment from "../components/Payment";
+import ParcelMachines from "../components/cart/ParcelMachines";
+import Payment from "../components/cart/Payment";
+import CartSumContext from "../store/CartSumContext";
 
 function Cart() {
 	const { t } = useTranslation();
 	const [isLoading, setIsLoading] = useState(false);
+	const cartSumCtx = useContext(CartSumContext);
 
 	const cart = useMemo(
 		() => JSON.parse(sessionStorage.getItem("cart")) || [],
@@ -51,6 +54,7 @@ function Cart() {
 	const emptyCart = () => {
 		sessionStorage.setItem("cart", JSON.stringify([]));
 		setProducts([]);
+		cartSumCtx.setCartSum("0.00");
 	};
 
 	const calculateCartSum = () => {
@@ -58,6 +62,7 @@ function Cart() {
 		products.forEach(
 			(product) => (total += product.product.price * product.quantity)
 		);
+		cartSumCtx.setCartSum(total.toFixed(2));
 		return total.toFixed(2);
 	};
 
@@ -88,7 +93,7 @@ function Cart() {
 	return (
 		<div>
 			{products.length > 0 && (
-				<div className="empty-cart-btn">
+				<div className={styles["empty-cart-btn"]}>
 					<Button onClick={emptyCart}>{t("empty_cart")}</Button>
 				</div>
 			)}
@@ -99,20 +104,20 @@ function Cart() {
 			)}
 
 			{products.map((element, i) => (
-				<div className="product" key={element.id}>
-					<img className="image" alt="" src={element.product.image} />
-					<div className="name">{element.product.name}</div>
-					<div className="price">{element.product.price} € / tk</div>
-					<div className="quantity">
+				<div className={styles.product} key={element.id}>
+					<img className={styles.image} alt="" src={element.product.image} />
+					<div className={styles.name}>{element.product.name}</div>
+					<div className={styles.price}>{element.product.price} € / tk</div>
+					<div className={styles.quantity}>
 						<img
-							className="button"
+							className={styles.button}
 							onClick={() => decreaseQuantity(i)}
 							src={require("../images/minus.png")}
 							alt=""
 						/>
 						<div>{element.quantity} tk</div>
 						<img
-							className="button"
+							className={styles.button}
 							onClick={() => increaseQuantity(i)}
 							src={require("../images/add.png")}
 							alt=""
@@ -121,7 +126,7 @@ function Cart() {
 					<div>{(element.product.price * element.quantity).toFixed(2)} €</div>
 
 					<img
-						className="button"
+						className={styles.button}
 						onClick={() => removeFromCart(i)}
 						src={require("../images/trash.png")}
 						alt=""
@@ -131,7 +136,7 @@ function Cart() {
 
 			{products.length > 0 && (
 				<div>
-					<div className="info-box">
+					<div className={styles["info-box"]}>
 						<div>
 							{t("total_products")}: {products.length}
 						</div>
@@ -139,7 +144,7 @@ function Cart() {
 							{t("total_price")}: {calculateCartSum()} €
 						</div>
 					</div>
-					<div className="end-box">
+					<div className={styles["end-box"]}>
 						<ParcelMachines />
 						<br />
 						<Payment sum={calculateCartSum()} />

@@ -1,3 +1,7 @@
+.carousel {
+    width: 500px;
+    margin: 0 auto;
+}
 .language-flag {
     width: 24px;
     margin: 0 10px;
@@ -42,10 +46,9 @@
 }
 
 .footer {
+    margin-top: 100px;
     background-color:#212529;
     color: white;
     padding: 20px;
-    position: fixed;
-    bottom: 0;
     width: 100%;
 }
