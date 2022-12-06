@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Payment from "../components/Payment";
+import SendEmail from "../components/SendEmail";
 import api from "../config/api";
 import styles from "../css/Cart.module.css";
 
@@ -12,6 +14,7 @@ function Cart() {
 		[]
 	);
 	const [products, setProducts] = useState([]);
+	const [isPayment, setPayment] = useState(true);
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -22,10 +25,10 @@ function Cart() {
 			})
 			.then((response) => {
 				// Successful request
-				setProducts(response);
+				setProducts(response.data);
 				const cartWithProducts = cart.map((element) => {
 					return {
-						product: response.find(
+						product: response.data.find(
 							(product) => product.id === element.product_id
 						),
 						quantity: element.quantity,
@@ -134,7 +137,31 @@ function Cart() {
 						<div>Total price: {calculateCartSum()} €</div>
 					</div>
 					<div className={styles["end-box"]}>
-						<Payment sum={calculateCartSum()} />
+						<ButtonGroup onChange>
+							<ToggleButton
+								type="radio"
+								variant="outline-success"
+								checked={isPayment}
+								onClick={() => setPayment(true)}
+							>
+								Maksa kohe
+							</ToggleButton>
+							<ToggleButton
+								type="radio"
+								variant="outline-primary"
+								checked={!isPayment}
+								onClick={() => setPayment(false)}
+							>
+								Maksa hiljem
+							</ToggleButton>
+						</ButtonGroup>
+						<br />
+						<br />
+						{isPayment ? (
+							<Payment sum={calculateCartSum()} />
+						) : (
+							<SendEmail sum={calculateCartSum()} cart={products} />
+						)}
 					</div>
 				</div>
 			)}
