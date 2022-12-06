@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Payment from "../components/Payment";
-import SendEmail from "../components/SendEmail";
+import Payment from "../components/Payment.tsx";
+import SendEmail from "../components/SendEmail.tsx";
 import api from "../config/api";
 import styles from "../css/Cart.module.css";
 

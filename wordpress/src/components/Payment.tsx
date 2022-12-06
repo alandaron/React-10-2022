@@ -1,9 +1,10 @@
+import React from "react";
 import api from "../config/api";
 
-function Payment(props) {
+function Payment(props: {sum: number}) {
 	const order = () => {
 		const data = {
-			line_items: JSON.parse(sessionStorage.getItem("cart")) || [],
+			line_items: JSON.parse(sessionStorage.getItem("cart") || "[]"),
 		};
 
 		api

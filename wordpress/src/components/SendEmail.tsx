@@ -1,11 +1,11 @@
 import emailjs from "@emailjs/browser";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 function SendEmail(props) {
-	const nameRef = useRef();
-	const emailRef = useRef();
-	const messageRef = useRef();
+	const nameRef = useRef<HTMLInputElement>(null);
+	const emailRef = useRef<HTMLInputElement>(null);
+	const messageRef = useRef<HTMLTextAreaElement>(null);
 
 	const sendEmail = () => {
 		console.log(props.sum);
@@ -20,9 +20,9 @@ function SendEmail(props) {
 			"</ol>";
 
 		const params = {
-			from_name: nameRef.current.value,
-			client_email: emailRef.current.value,
-			message: messageRef.current.value,
+			from_name: nameRef.current !== null && nameRef.current.value,
+			client_email: emailRef.current !== null && emailRef.current.value,
+			message:  messageRef.current !== null &&  messageRef.current.value,
 			products_html: products,
 			cart_sum: props.sum,
 		};
@@ -35,9 +35,15 @@ function SendEmail(props) {
 						position: "bottom-right",
 						theme: "light",
 					});
-					nameRef.current.value = "";
-					emailRef.current.value = "";
-					messageRef.current.value = "";
+					
+					if (nameRef.current !== null)
+						nameRef.current.value = "";
+
+					if (emailRef.current !== null)
+						emailRef.current.value = "";
+
+					if (messageRef.current !== null)
+						messageRef.current.value = "";
 				},
 				(error) => {
 					toast.error(error.text, {
