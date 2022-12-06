@@ -5,6 +5,7 @@ const headersData = {
 	Authorization: auth,
 	"Content-Type": "application/json",
 };
+
 /**
  * GET requests
  *
@@ -18,7 +19,13 @@ const get = (endpoint, params = {}) => {
 	return fetch(apiUrl + endpoint + "?" + new URLSearchParams(params), {
 		method: "GET",
 		headers: headersData,
-	}).then((res) => res.json());
+	}).then((res) =>
+		res.json().then((json) => ({
+			headers: res.headers,
+			status: res.status,
+			data: json,
+		}))
+	);
 };
 
 /**
@@ -36,7 +43,13 @@ const post = (endpoint, data, params = {}) => {
 		method: "POST",
 		headers: headersData,
 		body: JSON.stringify(data),
-	}).then((res) => res.json());
+	}).then((res) =>
+		res.json().then((json) => ({
+			headers: res.headers,
+			status: res.status,
+			data: json,
+		}))
+	);
 };
 
 /**
@@ -54,7 +67,13 @@ const put = (endpoint, data, params = {}) => {
 		method: "PUT",
 		headers: headersData,
 		body: JSON.stringify(data),
-	}).then((res) => res.json());
+	}).then((res) =>
+		res.json().then((json) => ({
+			headers: res.headers,
+			status: res.status,
+			data: json,
+		}))
+	);
 };
 
 /**
@@ -71,7 +90,13 @@ const del = (endpoint, params = {}) => {
 	return fetch(apiUrl + endpoint + "?" + new URLSearchParams(params), {
 		method: "DELETE",
 		headers: headersData,
-	}).then((res) => res.json());
+	}).then((res) =>
+		res.json().then((json) => ({
+			headers: res.headers,
+			status: res.status,
+			data: json,
+		}))
+	);
 };
 
 /**
@@ -87,7 +112,13 @@ const options = (endpoint, params = {}) => {
 	return fetch(apiUrl + endpoint + "?" + new URLSearchParams(params), {
 		method: "OPTIONS",
 		headers: headersData,
-	}).then((res) => res.json());
+	}).then((res) =>
+		res.json().then((json) => ({
+			headers: res.headers,
+			status: res.status,
+			data: json,
+		}))
+	);
 };
 
 const api = { get, post, put, del, options };
